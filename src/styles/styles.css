@@ -1,0 +1,60 @@
+/* font colors */
+.fc_white {
+  color: #ffffff;
+}
+
+/* font size */
+.fss {
+  font-size: 0.8rem;
+}
+.fsm {
+  font-size: 1rem;
+}
+
+/* font styles */
+.fwb {
+  font-weight: bold;
+}
+
+/* sizing */
+.w-100 {
+  width: 100%;
+}
+.h-36p {
+  height: 36px;
+}
+
+/* backgrounds */
+.bg-pri {
+  background-color: #0c007c;
+}
+
+/* display */
+.f {
+  display: flex;
+}
+.fcc {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.f_spbw {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* links */
+.ln_white:hover {
+  color: #ffffff;
+}
+
+/* login */
+.login-box {
+  margin: auto;
+  padding-bottom: 16px;
+  box-sizing: border-box;
+  border-radius: 32px;
+  border: 1px solid #100e96;
+  border-top: 8px solid #100e96;
+  box-shadow: 0 2px 8px #8a8a8a;
+}
