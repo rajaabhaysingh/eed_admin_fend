@@ -2,6 +2,9 @@
 .mar-0 {
   margin: 0;
 }
+.mar-auto {
+  margin: auto;
+}
 .mar_l-auto {
   margin-left: auto;
 }

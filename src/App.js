@@ -4,25 +4,107 @@ import "./App.css";
 import "./styles/styles.css";
 import "./styles/margins.css";
 
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import "./mui/mixins/chartjs";
 
-import Home from "./components/home/Home";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { ThemeProvider } from "@material-ui/core";
+
 import Signup from "./components/signup/Signup";
 import Login from "./components/login/Login";
-import Error from "./components/layouts/Error";
+import Home from "./mui/views/home";
+import Error from "./mui/views/errors/NotFoundView";
+import DashboardLayout from "./mui/layouts/DashboardLayout";
+
+import PrivateRoute from "./components/HOC/PrivateRoute";
+import GlobalStyles from "./mui/extras/GlobalStyles";
+import { createMuiTheme, colors } from "@material-ui/core";
+import shadows from "./mui/theme/shadows";
+import typography from "./mui/theme/typography";
+import { createContext } from "react";
+import { useState } from "react";
+// import routes from "./routes";
+
+// creating global contexts
+export const themeContext = createContext();
+
+const darkMode = localStorage.getItem("isDarkModeEnabled");
 
 function App() {
+  // managing local states
+  const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(
+    darkMode === "no" ? false : true
+  );
+
+  const themeOptions = {
+    type: isDarkModeEnabled ? "dark" : "light",
+    dark: isDarkModeEnabled ? "#222431" : "#eeeeee",
+    default: isDarkModeEnabled ? colors.blueGrey[900] : colors.blueGrey[50],
+    paper: isDarkModeEnabled ? "#2a2d3d" : "#ffffff",
+    primaryMain: isDarkModeEnabled ? colors.indigo[600] : colors.blue[600],
+    secondaryMain: isDarkModeEnabled ? colors.indigo[800] : colors.blue[500],
+    dashboardLink: isDarkModeEnabled ? colors.indigo[400] : colors.indigo[700],
+    textPrimary: isDarkModeEnabled ? colors.grey[100] : colors.grey[900],
+    textSecondary: isDarkModeEnabled ? colors.grey[500] : colors.grey[600],
+    divider: isDarkModeEnabled ? colors.grey[500] : colors.grey[400],
+    secondaryBars: isDarkModeEnabled ? colors.blueGrey[700] : colors.grey[400],
+    hover: isDarkModeEnabled ? colors.blueGrey[900] : colors.grey[100],
+  };
+
+  console.log("dark mode", isDarkModeEnabled);
+
+  // theming
+  const theme = createMuiTheme({
+    palette: {
+      type: themeOptions.type,
+      background: {
+        dark: themeOptions.dark,
+        default: themeOptions.default,
+        paper: themeOptions.paper,
+      },
+      action: {
+        hover: themeOptions.hover,
+      },
+      primary: {
+        main: themeOptions.primaryMain,
+      },
+      secondary: {
+        main: themeOptions.secondaryMain,
+      },
+      dashboardLink: {
+        main: themeOptions.dashboardLink,
+      },
+      text: {
+        primary: themeOptions.textPrimary,
+        secondary: themeOptions.textSecondary,
+      },
+      divider: themeOptions.divider,
+      secondaryBars: themeOptions.secondaryBars,
+    },
+    shadows,
+    typography,
+  });
+
+  // const routing = routerDom.useRoutes(routes);
   return (
     <div className="App">
-      <BrowserRouter>
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/login" component={Login} />
-          <Route path="/signup" component={Signup} />
-          <Route path="/error" component={Error} />
-          <Redirect to="/error" />
-        </Switch>
-      </BrowserRouter>
+      <themeContext.Provider
+        value={{ isDarkModeEnabled, setIsDarkModeEnabled }}
+      >
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          {/* {routing} */}
+          <BrowserRouter>
+            <Switch>
+              <PrivateRoute exact path="/" component={Home} />
+              <PrivateRoute path="/dashboard" component={DashboardLayout} />
+              <Route path="/login" component={Login} />
+              <Route path="/signup" component={Signup} />
+              <Route path="/error" component={Error} />
+            </Switch>
+          </BrowserRouter>
+        </ThemeProvider>
+      </themeContext.Provider>
     </div>
   );
 }
