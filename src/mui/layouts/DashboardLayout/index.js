@@ -62,7 +62,7 @@ const DashboardLayout = () => {
             {/* <Outlet /> */}
             <Switch>
               <PrivateRoute path={path} exact strict component={Dashboard} />
-              <PrivateRoute path={`${path}/enrollments`} component={Customer} />
+              <PrivateRoute path={`${path}/users`} component={Customer} />
               <PrivateRoute path={`${path}/courses`} component={Product} />
               <PrivateRoute path={`${path}/orders`} component={() => "Order"} />
               <PrivateRoute path={`${path}/sales`} component={() => "Sales"} />

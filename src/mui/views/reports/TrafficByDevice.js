@@ -22,6 +22,10 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     boxShadow: theme.shadows[8],
   },
+  cardHeader: {
+    background: theme.palette.secondary.main,
+    color: colors.common.white,
+  },
 }));
 
 const TrafficByDevice = ({ className, ...rest }) => {
@@ -90,7 +94,7 @@ const TrafficByDevice = ({ className, ...rest }) => {
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
-      <CardHeader title="Sales by category" />
+      <CardHeader className={classes.cardHeader} title="Sales by category" />
       <Divider />
       <CardContent>
         <Box height={300} position="relative">

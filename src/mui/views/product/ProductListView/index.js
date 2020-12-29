@@ -5,17 +5,16 @@ import Page from "../../../extras/Page";
 import Toolbar from "./Toolbar";
 import ProductCard from "./ProductCard";
 import data from "./data";
-import { Switch } from "react-router";
-import { Route } from "react-router";
-import { useRouteMatch } from "react-router";
+import { useRouteMatch, Redirect, Switch, Route } from "react-router-dom";
 
 import AddCourse from "../AddCourse";
-import { Redirect } from "react-router";
+import AddCategory from "../AddCategory";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     backgroundColor: theme.palette.background.dark,
     minHeight: "100%",
+    paddingBottom: theme.spacing(3),
   },
   productCard: {
     height: "100%",
@@ -35,9 +34,17 @@ const ProductList = () => {
           <Container maxWidth={false}>
             <Toolbar />
             <Box mt={3}>
-              <Grid container spacing={3}>
+              <Grid container spacing={2}>
                 {products.map((product) => (
-                  <Grid item key={product.id} lg={4} md={6} xs={12}>
+                  <Grid
+                    item
+                    key={product.id}
+                    xl={3}
+                    lg={3}
+                    md={4}
+                    sm={6}
+                    xs={12}
+                  >
                     <ProductCard
                       className={classes.productCard}
                       product={product}
@@ -52,9 +59,14 @@ const ProductList = () => {
           </Container>
         </Page>
       </Route>
-      <Route>
+      <Route path={`${path}/add`}>
         <Page className={classes.root} title="Courses">
           <AddCourse />
+        </Page>
+      </Route>
+      <Route path={`${path}/add-course-category`}>
+        <Page className={classes.root} title="Courses">
+          <AddCategory />
         </Page>
       </Route>
       <Redirect to="/error" />

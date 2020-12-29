@@ -11,8 +11,8 @@ import {
   Typography,
   makeStyles,
 } from "@material-ui/core";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import GetAppIcon from "@material-ui/icons/GetApp";
+import Update from "@material-ui/icons/Update";
+import HowToReg from "@material-ui/icons/HowToReg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,12 +25,20 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: theme.shadows[20],
     },
   },
+  courseThumbnail: {
+    width: "100%",
+    height: "150px",
+    objectFit: "cover",
+    objectPosition: "center",
+  },
   statsItem: {
     alignItems: "center",
     display: "flex",
   },
   statsIcon: {
     marginRight: theme.spacing(1),
+    color: theme.palette.text.primary,
+    fontSize: "1.2rem",
   },
 }));
 
@@ -40,18 +48,22 @@ const ProductCard = ({ className, product, ...rest }) => {
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardContent>
-        <Box display="flex" justifyContent="center" mb={3}>
-          <Avatar alt="Product" src={product.media} variant="square" />
+        <Box display="flex" justifyContent="center" mb={2}>
+          <img
+            alt="Product"
+            src={product.media}
+            className={classes.courseThumbnail}
+          />
         </Box>
         <Typography
           align="center"
           color="textPrimary"
           gutterBottom
-          variant="h4"
+          variant="h5"
         >
           {product.title}
         </Typography>
-        <Typography align="center" color="textPrimary" variant="body1">
+        <Typography align="center" color="textSecondary" variant="body2">
           {product.description}
         </Typography>
       </CardContent>
@@ -60,15 +72,15 @@ const ProductCard = ({ className, product, ...rest }) => {
       <Box p={2}>
         <Grid container justify="space-between" spacing={2}>
           <Grid className={classes.statsItem} item>
-            <AccessTimeIcon className={classes.statsIcon} color="action" />
+            <Update className={classes.statsIcon} color="action" />
             <Typography color="textSecondary" display="inline" variant="body2">
-              Updated 2hr ago
+              Updt. 2hr ago
             </Typography>
           </Grid>
           <Grid className={classes.statsItem} item>
-            <GetAppIcon className={classes.statsIcon} color="action" />
+            <HowToReg className={classes.statsIcon} color="action" />
             <Typography color="textSecondary" display="inline" variant="body2">
-              {product.totalDownloads} Enrollments
+              {product.totalDownloads} Enrolls
             </Typography>
           </Grid>
         </Grid>

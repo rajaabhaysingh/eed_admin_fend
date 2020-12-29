@@ -1,8 +1,9 @@
 import React from "react";
-import { withStyles } from "@material-ui/core/styles";
+import { emphasize, withStyles } from "@material-ui/core/styles";
 import Breadcrumbs from "@material-ui/core/Breadcrumbs";
 import Chip from "@material-ui/core/Chip";
 import HomeIcon from "@material-ui/icons/Home";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 
 const StyledBreadcrumb = withStyles((theme) => ({
   root: {
@@ -31,7 +32,7 @@ export default function CustomizedBreadcrumbs() {
         href="/dashboard/courses"
         label="Courses"
       />
-      <StyledBreadcrumb label="Add course" />
+      <StyledBreadcrumb label="Add category" />
     </Breadcrumbs>
   );
 }

@@ -1,6 +1,7 @@
 import axiosIntance from "../../helpers/axios";
 import { authConstants } from "./constants";
 
+// login
 export const login = (user) => {
   return async (dispatch) => {
     dispatch({
@@ -25,32 +26,28 @@ export const login = (user) => {
             },
           });
         } else {
-          console.log(res);
-          if (res.status === 400) {
-            localStorage.removeItem("token");
-            localStorage.removeItem("user");
-            dispatch({
-              type: authConstants.LOGIN_FAILURE,
-              payload: {
-                message: res,
-              },
-            });
-          }
+          localStorage.clear();
+          dispatch({
+            type: authConstants.LOGIN_FAILURE,
+            payload: {
+              error: "Unexpected error occured. [code: arreacau]",
+            },
+          });
         }
       })
       .catch((err) => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        localStorage.clear();
         dispatch({
           type: authConstants.LOGIN_FAILURE,
           payload: {
-            message: err.message,
+            error: err.response.data.error,
           },
         });
       });
   };
 };
 
+// isUserLoggedIn
 export const isUserLoggedIn = () => {
   return async (dispatch) => {
     const token = localStorage.getItem("token");
@@ -67,8 +64,35 @@ export const isUserLoggedIn = () => {
     } else {
       dispatch({
         type: authConstants.LOGIN_FAILURE,
-        payload: { message: "Failed to login." },
+        payload: { error: "Login failed. [code: arreacau]" },
       });
     }
+  };
+};
+
+// logout
+export const logout = () => {
+  return async (dispatch) => {
+    dispatch({ type: authConstants.LOGOUT_REQUEST });
+
+    await axiosIntance
+      .post("/api/admin/logout")
+      .then((res) => {
+        if (res.status === 200) {
+          localStorage.clear();
+          dispatch({ type: authConstants.LOGOUT_SUCCESS });
+        } else {
+          dispatch({
+            type: authConstants.LOGOUT_FAILURE,
+            payload: { error: "Unexpected error occured. [code: arreacau]" },
+          });
+        }
+      })
+      .catch((err) => {
+        dispatch({
+          type: authConstants.LOGOUT_FAILURE,
+          payload: { error: err.message },
+        });
+      });
   };
 };

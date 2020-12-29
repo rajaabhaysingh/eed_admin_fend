@@ -20,6 +20,13 @@ const useStyles = makeStyles((theme) => ({
   root: {
     boxShadow: theme.shadows[20],
   },
+  cardHeader: {
+    background: theme.palette.secondary.main,
+    color: colors.common.white,
+  },
+  button: {
+    color: colors.common.white,
+  },
 }));
 
 const Sales = ({ className, ...rest }) => {
@@ -101,7 +108,7 @@ const Sales = ({ className, ...rest }) => {
     cornerRadius: 10,
     layout: { padding: 0 },
     legend: { display: false },
-    maintainAspectRatio: true,
+    maintainAspectRatio: false,
     responsive: true,
     scales: {
       xAxes: [
@@ -155,10 +162,16 @@ const Sales = ({ className, ...rest }) => {
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
         action={
-          <Button endIcon={<ArrowDropDownIcon />} size="small" variant="text">
+          <Button
+            endIcon={<ArrowDropDownIcon />}
+            size="small"
+            variant="text"
+            className={classes.button}
+          >
             Last 15 days
           </Button>
         }
+        className={classes.cardHeader}
         title="Latest Sales"
       />
       <Divider />

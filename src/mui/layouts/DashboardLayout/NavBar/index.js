@@ -37,9 +37,9 @@ const itemsTop = [
     title: "Dashboard",
   },
   {
-    href: "/dashboard/enrollments",
+    href: "/dashboard/users",
     icon: UsersIcon,
-    title: "Enrollments",
+    title: "Users",
   },
   {
     href: "/dashboard/courses",

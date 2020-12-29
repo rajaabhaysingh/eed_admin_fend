@@ -8,6 +8,7 @@ import {
   Button,
   Card,
   CardHeader,
+  colors,
   Divider,
   IconButton,
   List,
@@ -24,31 +25,37 @@ import img from "../../../images/eed.png";
 const data = [
   {
     id: uuid(),
-    name: "Dropbox",
+    name: "Lean Six Sigma Green Belt Training & Certification",
     imageUrl: img,
     updatedAt: moment().subtract(2, "hours"),
   },
   {
     id: uuid(),
-    name: "Medium Corporation",
+    name: "Medium Corporation and Machine Learning",
     imageUrl: img,
     updatedAt: moment().subtract(2, "hours"),
   },
   {
     id: uuid(),
-    name: "Slack",
+    name: "PMI-ACP® Certification Training",
     imageUrl: img,
     updatedAt: moment().subtract(3, "hours"),
   },
   {
     id: uuid(),
-    name: "Lyft",
+    name: "CompTIA Network+ Certification Training",
     imageUrl: img,
     updatedAt: moment().subtract(5, "hours"),
   },
   {
     id: uuid(),
-    name: "GitHub",
+    name: "Free Fullstack Development Program",
+    imageUrl: img,
+    updatedAt: moment().subtract(9, "hours"),
+  },
+  {
+    id: uuid(),
+    name: "Lean Six Sigma Green & Black Belt Combo Training & Certification",
     imageUrl: img,
     updatedAt: moment().subtract(9, "hours"),
   },
@@ -60,8 +67,15 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[8],
   },
   image: {
-    height: 48,
+    height: 32,
     width: 48,
+    objectFit: "cover",
+    objectPosition: "center",
+    marginRight: theme.spacing(2),
+  },
+  cardHeader: {
+    background: theme.palette.secondary.main,
+    color: colors.common.white,
   },
 }));
 
@@ -72,11 +86,12 @@ const LatestProducts = ({ className, ...rest }) => {
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
       <CardHeader
+        className={classes.cardHeader}
         subtitle={`${products.length} in total`}
         title="Latest Courses"
       />
       <Divider />
-      <List>
+      <List dense>
         {products.map((product, i) => (
           <ListItem divider={i < products.length - 1} key={product.id}>
             <ListItemAvatar>

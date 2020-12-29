@@ -7,7 +7,7 @@ import "./styles/margins.css";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import "./mui/mixins/chartjs";
 
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { ThemeProvider } from "@material-ui/core";
 
 import Signup from "./components/signup/Signup";
@@ -23,6 +23,10 @@ import shadows from "./mui/theme/shadows";
 import typography from "./mui/theme/typography";
 import { createContext } from "react";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { isUserLoggedIn } from "./redux/actions/auth.actions";
 // import routes from "./routes";
 
 // creating global contexts
@@ -35,6 +39,17 @@ function App() {
   const [isDarkModeEnabled, setIsDarkModeEnabled] = useState(
     darkMode === "no" ? false : true
   );
+
+  // managing global auth state
+  const auth = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (!auth.authenticated) {
+      dispatch(isUserLoggedIn());
+    }
+  }, []);
 
   const themeOptions = {
     type: isDarkModeEnabled ? "dark" : "light",
@@ -50,8 +65,6 @@ function App() {
     secondaryBars: isDarkModeEnabled ? colors.blueGrey[700] : colors.grey[400],
     hover: isDarkModeEnabled ? colors.blueGrey[900] : colors.grey[100],
   };
-
-  console.log("dark mode", isDarkModeEnabled);
 
   // theming
   const theme = createMuiTheme({
@@ -94,15 +107,13 @@ function App() {
         <ThemeProvider theme={theme}>
           <GlobalStyles />
           {/* {routing} */}
-          <BrowserRouter>
-            <Switch>
-              <PrivateRoute exact path="/" component={Home} />
-              <PrivateRoute path="/dashboard" component={DashboardLayout} />
-              <Route path="/login" component={Login} />
-              <Route path="/signup" component={Signup} />
-              <Route path="/error" component={Error} />
-            </Switch>
-          </BrowserRouter>
+          <Switch>
+            <PrivateRoute exact path="/" component={Home} />
+            <PrivateRoute path="/dashboard" component={DashboardLayout} />
+            <Route path="/login" component={Login} />
+            <Route path="/signup" component={Signup} />
+            <Route path="/error" component={Error} />
+          </Switch>
         </ThemeProvider>
       </themeContext.Provider>
     </div>

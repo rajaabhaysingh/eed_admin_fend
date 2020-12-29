@@ -3,8 +3,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import Link from "@material-ui/core/Link";
 import Paper from "@material-ui/core/Paper";
 import Box from "@material-ui/core/Box";
@@ -16,13 +14,11 @@ import Alert from "@material-ui/lab/Alert";
 import IconButton from "@material-ui/core/IconButton";
 import Collapse from "@material-ui/core/Collapse";
 import CloseIcon from "@material-ui/icons/Close";
-import { colors } from "@material-ui/core";
 
-import { isUserLoggedIn, login } from "../../redux/actions/auth.actions";
+import { login } from "../../redux/actions";
 import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { Redirect } from "react-router-dom";
-import { useEffect } from "react";
 
 import bg_1 from "../../images/bg_1.jpg";
 import bg_2 from "../../images/bg_2.jpg";
@@ -30,6 +26,7 @@ import bg_3 from "../../images/bg_3.jpg";
 import abstract from "../../images/abstract.jpg";
 import logo_light from "../../images/logo_light.png";
 import eed from "../../images/eed.png";
+import { useEffect } from "react";
 
 function Copyright() {
   return (
@@ -95,14 +92,7 @@ export default function SignInSide() {
   const auth = useSelector((state) => state.auth);
 
   const classes = useStyles();
-
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (!auth.authenticated) {
-      dispatch(isUserLoggedIn());
-    }
-  }, []);
 
   // handleLoginFormSubmit
   const handleLoginFormSubmit = (e) => {
@@ -116,9 +106,16 @@ export default function SignInSide() {
     dispatch(login(user));
   };
 
+  // if login fails
+  useEffect(() => {
+    if (auth.error) {
+      setError(auth.error);
+    }
+  }, [auth.error]);
+
   // if user is logged in, he/she will be redirected to dashboard even if he/she tries to login again
   if (auth.authenticated) {
-    return <Redirect to="/" />;
+    return <Redirect to="/dashboard" />;
   }
 
   return (
@@ -219,7 +216,7 @@ export default function SignInSide() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="/signup" variant="body2">
                   {"New? SignUp now"}
                 </Link>
               </Grid>

@@ -10,6 +10,7 @@ import {
   makeStyles,
   Typography,
   Grid,
+  Hidden,
 } from "@material-ui/core";
 import { Search as SearchIcon } from "react-feather";
 import Breadcrumbs from "./BreadCrumbs";
@@ -18,6 +19,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Add from "@material-ui/icons/Add";
+import Book from "@material-ui/icons/Book";
 import Description from "@material-ui/icons/Description";
 import { useHistory } from "react-router";
 import { useRouteMatch } from "react-router";
@@ -78,20 +80,25 @@ const Toolbar = ({ className, ...rest }) => {
 
   return (
     <div className={clsx(classes.root, className)} {...rest}>
-      <Box mt={3}>
-        <Box className={classes.breadcrumbs}>
-          <Breadcrumbs />
+      <Hidden mdDown>
+        <Box mt={3}>
+          <Box className={classes.breadcrumbs}>
+            <Breadcrumbs />
+          </Box>
         </Box>
-      </Box>
+      </Hidden>
 
       <Box className={classes.utils2} mt={3}>
         <Box marginBottom="24px">
           <Typography variant="h4" color="textPrimary">
             Courses
           </Typography>
+          <Typography variant="body2" color="textSecondary">
+            You can edit/delete/update the courses in this section.
+          </Typography>
         </Box>
-        <Grid container spacing={3}>
-          <Grid item lg={12} sm={12} xl={12} xs={12}>
+        <Grid container spacing={1}>
+          <Grid item lg={6} sm={12} xl={6} xs={12}>
             <Button
               variant="contained"
               color="secondary"
@@ -104,8 +111,26 @@ const Toolbar = ({ className, ...rest }) => {
             >
               Add new course
             </Button>
-            <Button className={classes.sCase} startIcon={<Description />}>
+            <Button
+              size="small"
+              className={classes.sCase}
+              startIcon={<Description />}
+            >
               Export to Excel
+            </Button>
+          </Grid>
+          <Grid item lg={6} sm={12} xl={6} xs={12}>
+            <Button
+              variant="contained"
+              color="secondary"
+              className={classes.button}
+              startIcon={<Book />}
+              size="small"
+              onClick={() => {
+                history.push(`${url}/add-course-category`);
+              }}
+            >
+              Add new course category
             </Button>
           </Grid>
           <Grid item lg={6} sm={12} xl={6} xs={12}>

@@ -12,18 +12,21 @@ import {
   makeStyles,
   Menu,
   MenuItem,
+  Button,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import NotificationsIcon from "@material-ui/icons/NotificationsOutlined";
-import PowerSettingsNew from "@material-ui/icons/PowerSettingsNew";
 import MoreVert from "@material-ui/icons/MoreVert";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import Logo from "../../extras/Logo";
 
+import { useContext } from "react";
+import { useDispatch } from "react-redux";
+import { logout } from "../../../redux/actions";
+
 // importing contexts
 import { themeContext } from "../../../App";
-import { useContext } from "react";
 
 const useStyles = makeStyles(() => ({
   root: {},
@@ -37,6 +40,8 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
   const classes = useStyles();
   const [notifications] = useState([]);
 
+  const dispatch = useDispatch();
+
   // using imported context
   const { isDarkModeEnabled, setIsDarkModeEnabled } = useContext(themeContext);
 
@@ -45,12 +50,18 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
 
   const open = Boolean(anchorEl);
 
+  // --- topbar menu operations ---
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
   const handleClose = () => {
     setAnchorEl(null);
+  };
+
+  // handleLogout
+  const handleLogout = () => {
+    dispatch(logout());
   };
 
   // handleChange (for dark mode switch)
@@ -60,8 +71,6 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
     const iSdarkModeOn = e.target.checked ? "yes" : "no";
     localStorage.setItem("isDarkModeEnabled", iSdarkModeOn);
   };
-
-  console.log("dark mode", isDarkModeEnabled);
 
   return (
     <AppBar className={clsx(classes.root, className)} elevation={0} {...rest}>
@@ -123,9 +132,9 @@ const TopBar = ({ className, onMobileNavOpen, ...rest }) => {
               </Typography>
             </MenuItem>
             <MenuItem>
-              <Typography variant="body2" gutterBottom>
+              <Button fullWidth variant="outlined" onClick={handleLogout}>
                 Logout
-              </Typography>
+              </Button>
             </MenuItem>
           </Menu>
         </Hidden>

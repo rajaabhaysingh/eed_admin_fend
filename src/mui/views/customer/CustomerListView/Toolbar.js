@@ -89,7 +89,11 @@ const Toolbar = ({ className, ...rest }) => {
       <Box className={classes.utils2} mt={3}>
         <Box marginBottom="24px">
           <Typography variant="h4" color="textPrimary">
-            Enrollments
+            Users
+          </Typography>
+          <Typography variant="body2" color="textSecondary">
+            You can edit/delete/update the information of the registered users
+            in this section.
           </Typography>
         </Box>
         <Grid container spacing={1}>
