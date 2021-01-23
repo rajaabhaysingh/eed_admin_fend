@@ -13,12 +13,13 @@ import {
   Hidden,
 } from "@material-ui/core";
 import { Search as SearchIcon } from "react-feather";
-import Breadcrumbs from "./BreadCrumbs";
+import Breadcrumbs from "../../../../components/layouts/Breadcrumbs";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import Add from "@material-ui/icons/Add";
+import Edit from "@material-ui/icons/Edit";
 import Book from "@material-ui/icons/Book";
 import Description from "@material-ui/icons/Description";
 import { useHistory } from "react-router";
@@ -53,9 +54,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     boxShadow: theme.shadows[6],
     marginRight: theme.spacing(1),
-  },
-  sCase: {
-    textTransform: "none",
+    marginBottom: theme.spacing(1),
   },
   importButton: {
     marginRight: theme.spacing(1),
@@ -66,6 +65,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Toolbar = ({ className, ...rest }) => {
+  // for breadcrumbs
+  const backlinks = [
+    {
+      url: "/dashboard",
+      label: "Dashboard",
+    },
+  ];
+
   const classes = useStyles();
 
   // local state management
@@ -81,20 +88,20 @@ const Toolbar = ({ className, ...rest }) => {
   return (
     <div className={clsx(classes.root, className)} {...rest}>
       <Hidden mdDown>
-        <Box mt={3}>
+        <Box mt={1}>
           <Box className={classes.breadcrumbs}>
-            <Breadcrumbs />
+            <Breadcrumbs backlinks={backlinks} currentLabel="Courses" />
           </Box>
         </Box>
       </Hidden>
 
-      <Box className={classes.utils2} mt={3}>
+      <Box className={classes.utils2} mt={2}>
         <Box marginBottom="24px">
           <Typography variant="h4" color="textPrimary">
             Courses
           </Typography>
           <Typography variant="body2" color="textSecondary">
-            You can edit/delete/update the courses in this section.
+            Click on a course below to edit / delete / update it.
           </Typography>
         </Box>
         <Grid container spacing={1}>
@@ -113,7 +120,8 @@ const Toolbar = ({ className, ...rest }) => {
             </Button>
             <Button
               size="small"
-              className={classes.sCase}
+              className={classes.button}
+              style={{ textTransform: "none" }}
               startIcon={<Description />}
             >
               Export to Excel

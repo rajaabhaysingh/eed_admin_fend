@@ -1,5 +1,11 @@
 import React from "react";
-import { Editor, EditorState, RichUtils, getDefaultKeyBinding } from "draft-js";
+import {
+  Editor,
+  EditorState,
+  RichUtils,
+  getDefaultKeyBinding,
+  convertToRaw,
+} from "draft-js";
 import "../../styles/draftjs.css";
 import "draft-js/dist/Draft.css";
 import {
@@ -24,7 +30,12 @@ class RichEditorExample extends React.Component {
     this.state = { editorState: EditorState.createEmpty() };
 
     this.focus = () => this.refs.editor.focus();
-    this.onChange = (editorState) => this.setState({ editorState });
+    this.onChange = (editorState) => {
+      this.setState({ editorState });
+      this.props.setRichText(() =>
+        convertToRaw(editorState.getCurrentContent())
+      );
+    };
 
     this.handleKeyCommand = this._handleKeyCommand.bind(this);
     this.mapKeyToEditorCommand = this._mapKeyToEditorCommand.bind(this);
@@ -97,7 +108,7 @@ class RichEditorExample extends React.Component {
             handleKeyCommand={this.handleKeyCommand}
             keyBindingFn={this.mapKeyToEditorCommand}
             onChange={this.onChange}
-            placeholder="Tell a story..."
+            placeholder="Description goes here..."
             ref="editor"
             spellCheck={true}
           />
@@ -172,9 +183,9 @@ const BlockStyleControls = (props) => {
 
   return (
     <div className="RichEditor-controls">
-      {BLOCK_TYPES.map((type) => (
+      {BLOCK_TYPES.map((type, i) => (
         <StyleButton
-          key={type.label}
+          key={i}
           active={type.style === blockType}
           label={type.label}
           onToggle={props.onToggle}
@@ -197,9 +208,9 @@ const InlineStyleControls = (props) => {
 
   return (
     <div className="RichEditor-controls">
-      {INLINE_STYLES.map((type) => (
+      {INLINE_STYLES.map((type, i) => (
         <StyleButton
-          key={type.style}
+          key={i}
           active={currentStyle.has(type.style)}
           label={type.label}
           onToggle={props.onToggle}

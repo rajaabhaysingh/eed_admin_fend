@@ -5,7 +5,7 @@ const FormHeader = (props) => {
   const class2 = ["borB-2", `${props.cssClass}`];
 
   return (
-    <div className="fcol">
+    <div className="fcol w-100">
       <div className={`${class1.join(" ")}`}>
         <span style={{ fontSize: "1rem", fontWeight: "bold" }}>
           {props.heading}

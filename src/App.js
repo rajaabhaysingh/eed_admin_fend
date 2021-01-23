@@ -27,7 +27,6 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { isUserLoggedIn } from "./redux/actions/auth.actions";
-// import routes from "./routes";
 
 // creating global contexts
 export const themeContext = createContext();

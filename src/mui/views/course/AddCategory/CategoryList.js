@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { v4 as uuid } from "uuid";
 import moment from "moment";
 import {
   Box,
@@ -27,7 +26,6 @@ const useStyles = makeStyles((theme) => ({
     height: "100%",
     width: "100%",
     boxShadow: theme.shadows[3],
-    // backgroundColor: theme.palette.background.dark,
   },
   image: {
     height: 48,
@@ -37,11 +35,18 @@ const useStyles = makeStyles((theme) => ({
     objectFit: "cover",
     objectPosition: "center",
   },
-  listItemName: {
-    marginLeft: theme.spacing(2),
+  marginLeft: {
+    marginLeft: theme.spacing(1),
+  },
+  marginLeft2: {
+    marginLeft: theme.spacing(7),
   },
   cardHeader: {
     background: theme.palette.secondary.main,
+    color: colors.common.white,
+  },
+  redColor: {
+    backgroundColor: colors.red[500],
     color: colors.common.white,
   },
 }));
@@ -49,6 +54,47 @@ const useStyles = makeStyles((theme) => ({
 const CategoryList = ({ className, setShowCatList, data, ...rest }) => {
   const classes = useStyles();
   // const [products] = useState(data);
+
+  // renderNestedCategory
+  const renderNestedCategory = (categories) => {
+    let tempCatList = [];
+
+    for (let categoryItem of categories) {
+      tempCatList.push(
+        <ListItem divider={true} key={categoryItem._id}>
+          <ListItemAvatar>
+            <img
+              alt=""
+              className={classes.image}
+              src={
+                categoryItem.categoryImage
+                  ? process.env.REACT_APP_MEDIA_URL_BASE +
+                    categoryItem.categoryImage
+                  : catPlaceholder
+              }
+            />
+          </ListItemAvatar>
+          <ListItemText
+            className={classes.marginLeft}
+            primary={categoryItem.categoryName}
+            secondary={`Added: ${moment(categoryItem.createdAt).format(
+              "DD MMM YYYY, hh:mma"
+            )}`}
+          />
+          <IconButton edge="end" size="small">
+            <MoreVertIcon />
+          </IconButton>
+        </ListItem>,
+        categoryItem.children.length > 0 ? (
+          <List className={classes.marginLeft2} dense>
+            {renderNestedCategory(categoryItem.children)}
+          </List>
+        ) : null
+      );
+    }
+
+    return tempCatList;
+  };
 
   return (
     <Card className={clsx(classes.root, className)} {...rest}>
@@ -58,40 +104,13 @@ const CategoryList = ({ className, setShowCatList, data, ...rest }) => {
         title="Available categories"
       />
       <Divider />
-      <List dense>
-        {data.map((categoryItem, i) => (
-          <ListItem divider={i < data.length - 1} key={categoryItem._id}>
-            <ListItemAvatar>
-              <img
-                alt=""
-                className={classes.image}
-                src={
-                  categoryItem.categoryImage
-                    ? categoryItem.categoryImage
-                    : catPlaceholder
-                }
-              />
-            </ListItemAvatar>
-            <ListItemText
-              className={classes.listItemName}
-              primary={categoryItem.categoryName}
-              secondary={`Added: ${moment(categoryItem.createdAt).format(
-                "DD MMM YYYY, hh:mma"
-              )}`}
-            />
-            <IconButton edge="end" size="small">
-              <MoreVertIcon />
-            </IconButton>
-          </ListItem>
-        ))}
-      </List>
-      <Divider />
+      <List dense>{renderNestedCategory(data)}</List>
       <Box display="flex" justifyContent="flex-end" p={2}>
         <Button
-          color="primary"
+          className={classes.redColor}
           endIcon={<CloseOutlined />}
           size="small"
-          variant="text"
+          variant="contained"
           onClick={() => {
             setShowCatList(false);
           }}

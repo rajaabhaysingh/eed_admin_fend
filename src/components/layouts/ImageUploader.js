@@ -1,5 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import { CloudUpload } from "@material-ui/icons";
+import { Alert, AlertTitle } from "@material-ui/lab";
 import React, { useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 
@@ -49,6 +50,7 @@ const img = {
   display: "block",
   width: "auto",
   height: "100%",
+  width: "100%",
   objectFit: "cover",
   objectPosition: "center",
 };
@@ -66,30 +68,48 @@ const thumbButton = {
   padding: "4px 8px",
 };
 
-const ImageUploader = (props) => {
-  const [files, setFiles] = useState([]);
+const ImageUploader = ({ maxFiles, files, setFiles }) => {
+  const [error, setError] = useState("");
 
   const classes = useStyles();
 
   const { getRootProps, getInputProps } = useDropzone({
     accept: "image/*",
-    onDrop: (acceptedFiles) => {
-      setFiles(
-        acceptedFiles.map((file) =>
-          Object.assign(file, {
-            preview: URL.createObjectURL(file),
-          })
-        )
-      );
+    maxFiles: maxFiles || 1,
+    onDrop: (acceptedFiles, fileRejections) => {
+      if (fileRejections.length > 0) {
+        setError(`Maximum ${maxFiles} file(s) allowed. Please try again.`);
+      } else {
+        setFiles(
+          acceptedFiles.map((file) =>
+            Object.assign(file, {
+              preview: URL.createObjectURL(file),
+            })
+          )
+        );
+        setError("");
+      }
     },
   });
 
-  const thumbs = files.map((file, index) => (
+  // deleteFile
+  const deleteFile = (index) => {
+    const newFiles = [...files];
+    newFiles.splice(index, 1);
+    setFiles(newFiles);
+  };
+
+  // renderThumbnails
+  const renderThumbnails = files.map((file, index) => (
     <div style={thumb} key={file.name}>
       <div style={thumbInner}>
         <img src={file.preview} style={img} alt="" />
       </div>
-      <button type="button" style={thumbButton} onClick={() => {}}>
+      <button
+        type="button"
+        style={thumbButton}
+        onClick={() => deleteFile(index)}
+      >
         delete
       </button>
     </div>
@@ -112,10 +132,17 @@ const ImageUploader = (props) => {
             <CloudUpload />
           </i>
           <strong>Drag 'n' drop</strong> or <strong>click here</strong> to
-          select category thumbnail.
+          select category thumbnail. Only image files
+          <strong>(jpg/png/tif/bmp etc.)</strong> are accepted.
         </Typography>
       </div>
-      <aside style={thumbsContainer}>{thumbs}</aside>
+      {error && (
+        <Alert style={{ marginTop: "16px" }} severity="error">
+          <AlertTitle>Error</AlertTitle>
+          {error}
+        </Alert>
+      )}
+      <aside style={thumbsContainer}>{renderThumbnails}</aside>
     </section>
   );
 };

@@ -39,14 +39,24 @@ const RegisterView = () => {
 
   // handleSignup
   const handleSignup = (formValues) => {
-    dispatch(signup(formValues));
-    // history.push("/login");
+    const formData = new FormData();
+
+    formData.append("email", formValues.email);
+    formData.append("password", formValues.password);
+    formData.append("firstName", formValues.firstName);
+    formData.append("lastName", formValues.lastName);
+    formData.append("middleName", formValues.middleName);
+    formData.append("profilePicture", formValues.profilePicture);
+
+    dispatch(signup(formData));
   };
 
   // if signup fails
   useEffect(() => {
     if (signupState.error) {
       setError(signupState.error);
+    } else {
+      setError("");
     }
   }, [signupState.error]);
 
@@ -55,8 +65,6 @@ const RegisterView = () => {
     console.log("You need to logout first.");
     return <Redirect to="/dashboard" />;
   }
-
-  console.log(signupState);
 
   // if signup is successful
   if (signupState.registered) {
@@ -79,6 +87,7 @@ const RegisterView = () => {
               middleName: "",
               lastName: "",
               password: "",
+              profilePicture: null,
               policy: false,
             }}
             validationSchema={Yup.object().shape({
@@ -106,7 +115,7 @@ const RegisterView = () => {
               touched,
               values,
             }) => (
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Box mb={3}>
                   <Typography color="textPrimary" variant="h2">
                     Create new Admin account
@@ -217,7 +226,7 @@ const RegisterView = () => {
                 <Box my={2}>
                   <Button
                     color="primary"
-                    disabled={signupState.loading}
+                    disabled={signupState.loading || isSubmitting}
                     fullWidth
                     size="large"
                     type="submit"

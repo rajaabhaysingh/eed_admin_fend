@@ -2,7 +2,6 @@ import React from "react";
 import PropTypes from "prop-types";
 import clsx from "clsx";
 import {
-  Avatar,
   Box,
   Card,
   CardContent,
@@ -10,9 +9,12 @@ import {
   Grid,
   Typography,
   makeStyles,
+  colors,
 } from "@material-ui/core";
 import Update from "@material-ui/icons/Update";
 import HowToReg from "@material-ui/icons/HowToReg";
+import coursePlaceholder from "../../../../images/course_placeholder.jpg";
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,11 +27,21 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: theme.shadows[20],
     },
   },
+  imageContainer: {
+    paddingTop: "50%",
+    width: "100%",
+    position: "relative",
+  },
   courseThumbnail: {
     width: "100%",
-    height: "150px",
+    height: "100%",
+    boxSizing: "border-box",
     objectFit: "cover",
     objectPosition: "center",
+    borderRadius: "2px",
+    position: "absolute",
+    top: "0px",
+    left: "0px",
   },
   statsItem: {
     alignItems: "center",
@@ -40,18 +52,50 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.text.primary,
     fontSize: "1.2rem",
   },
+  cardDesc: {
+    padding: theme.spacing(2),
+    marginTop: theme.spacing(2),
+    borderRadius: "4px",
+    maxHeight: "100px",
+    height: "100px",
+    overflow: "scroll",
+    background: theme.palette.background.dark,
+  },
+  chip: {
+    padding: "2px 16px",
+    background: theme.palette.secondary.main,
+    color: colors.common.white,
+    borderRadius: "20px 0 0 20px",
+    position: "absolute",
+    top: "30px",
+    right: "0",
+  },
 }));
 
-const ProductCard = ({ className, product, ...rest }) => {
+const ProductCard = ({ className, item, ...rest }) => {
   const classes = useStyles();
+  const history = useHistory();
+
+  // handleCardClick
+  const handleCardClick = () => {
+    history.push(`/dashboard/courses/${item._id}`);
+  };
 
   return (
-    <Card className={clsx(classes.root, className)} {...rest}>
-      <CardContent>
-        <Box display="flex" justifyContent="center" mb={2}>
+    <Card
+      onClick={handleCardClick}
+      className={clsx(classes.root, className)}
+      {...rest}
+    >
+      <CardContent style={{ position: "relative" }}>
+        <Box className={classes.imageContainer} mb={2}>
           <img
             alt="Product"
-            src={product.media}
+            src={
+              item.thumbnail
+                ? process.env.REACT_APP_MEDIA_URL_BASE + item.thumbnail
+                : coursePlaceholder
+            }
             className={classes.courseThumbnail}
           />
         </Box>
@@ -61,10 +105,13 @@ const ProductCard = ({ className, product, ...rest }) => {
           gutterBottom
           variant="h5"
         >
-          {product.title}
+          {item.name}
         </Typography>
-        <Typography align="center" color="textSecondary" variant="body2">
-          {product.description}
+        <Box className={classes.cardDesc}>
+          <Typography variant="body2">{item.desc}</Typography>
+        </Box>
+        <Typography align="center" className={classes.chip} variant="body2">
+          {item.level}
         </Typography>
       </CardContent>
       <Box flexGrow={1} />
@@ -80,7 +127,7 @@ const ProductCard = ({ className, product, ...rest }) => {
           <Grid className={classes.statsItem} item>
             <HowToReg className={classes.statsIcon} color="action" />
             <Typography color="textSecondary" display="inline" variant="body2">
-              {product.totalDownloads} Enrolls
+              {item.enrollments?.length || "0"} Enrolls
             </Typography>
           </Grid>
         </Grid>
@@ -91,7 +138,7 @@ const ProductCard = ({ className, product, ...rest }) => {
 
 ProductCard.propTypes = {
   className: PropTypes.string,
-  product: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
 };
 
 export default ProductCard;

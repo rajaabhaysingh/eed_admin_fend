@@ -18,7 +18,7 @@ const SettingsView = () => {
 
   return (
     <Page className={classes.root} title="Settings">
-      <Container maxWidth="lg">
+      <Container maxWidth="100%">
         <Notifications />
         <Box mt={3}>
           <Password />

@@ -103,7 +103,7 @@ const TrafficByDevice = ({ className, ...rest }) => {
         <Box display="flex" justifyContent="center" mt={2}>
           {categories.map(({ color, icon: Icon, title, value }) => (
             <Box key={title} p={1} textAlign="center">
-              <Icon color="#ffffff" />
+              <Icon color="inherit" />
               <Typography color="textPrimary" variant="body1">
                 {title}
               </Typography>

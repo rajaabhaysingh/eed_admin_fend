@@ -6,7 +6,7 @@ import TopBar from "./TopBar";
 
 import Dashboard from "../../views/reports";
 import Customer from "../../views/customer/CustomerListView";
-import Product from "../../views/product/ProductListView";
+import Product from "../../views/course/CourseLanding";
 import Account from "../../views/account/AccountView";
 import Settings from "../../views/settings/SettingsView";
 
@@ -30,7 +30,6 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   contentContainer: {
-    // borderLeft: "1px solid #444444",
     display: "flex",
     flex: "1 1 auto",
     overflow: "hidden",

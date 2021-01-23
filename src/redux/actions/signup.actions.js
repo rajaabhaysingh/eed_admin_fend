@@ -36,7 +36,12 @@ export const signup = (user) => {
         dispatch({
           type: signupConstants.SIGNUP_FAILURE,
           payload: {
-            error: err.response.data.error,
+            error:
+              typeof err.response?.data?.error !== "object"
+                ? err.response?.data?.error
+                : err.response?.data?.error?.message ||
+                  err.message ||
+                  "Some unexpected error ocuured. Try refreshing the page or contact developer if problem persists.",
           },
         });
       });

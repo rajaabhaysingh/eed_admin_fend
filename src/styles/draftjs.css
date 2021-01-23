@@ -13,15 +13,15 @@
  */
 
 .RichEditor-root {
-  background: #fff;
-  border: 1px solid #ddd;
-  font-family: "Georgia", serif;
+  background: #00000000;
+  border: 1px solid #cccccc;
   font-size: 14px;
   padding: 15px;
+  border-radius: 4px;
 }
 
 .RichEditor-editor {
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #cccccc;
   cursor: text;
   font-size: 16px;
   margin-top: 10px;
@@ -43,7 +43,6 @@
 
 .RichEditor-editor .RichEditor-blockquote {
   border-left: 5px solid #eee;
-  color: #666;
   font-family: "Hoefler Text", "Georgia", serif;
   font-style: italic;
   margin: 16px 0;
@@ -51,10 +50,11 @@
 }
 
 .RichEditor-editor .public-DraftStyleDefault-pre {
-  background-color: rgba(0, 0, 0, 0.05);
+  background-color: rgb(203, 211, 218);
   font-family: "Inconsolata", "Menlo", "Consolas", monospace;
   font-size: 16px;
   padding: 20px;
+  border-radius: 4px;
 }
 
 .RichEditor-controls {
@@ -65,7 +65,6 @@
 }
 
 .RichEditor-styleButton {
-  color: #999;
   cursor: pointer;
   margin-right: 16px;
   padding: 2px 0;

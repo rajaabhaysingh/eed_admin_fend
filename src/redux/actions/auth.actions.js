@@ -13,11 +13,10 @@ export const login = (user) => {
         ...user,
       })
       .then((res) => {
-        console.log(res);
         if (res.status === 200) {
           const { token, data } = res.data;
           localStorage.setItem("token", token);
-          localStorage.setItem("user", JSON.stringify(user));
+          localStorage.setItem("user", JSON.stringify(data));
           dispatch({
             type: authConstants.LOGIN_SUCCESS,
             payload: {
@@ -40,7 +39,12 @@ export const login = (user) => {
         dispatch({
           type: authConstants.LOGIN_FAILURE,
           payload: {
-            error: err.response.data.error,
+            error:
+              typeof err.response?.data?.error !== "object"
+                ? err.response?.data?.error
+                : err.response?.data?.error?.message ||
+                  err.message ||
+                  "Some unexpected error ocuured. Try refreshing the page or contact developer if problem persists.",
           },
         });
       });
@@ -53,12 +57,23 @@ export const isUserLoggedIn = () => {
     const token = localStorage.getItem("token");
     const user = localStorage.getItem("user");
     if (token && user) {
-      const user = JSON.parse(localStorage.getItem("user"));
+      let user = null;
+      try {
+        user = JSON.parse(localStorage.getItem("user"));
+      } catch (error) {
+        localStorage.clear();
+        dispatch({
+          type: authConstants.LOGIN_FAILURE,
+          payload: {
+            error: "Automatic login failed. Please login again...",
+          },
+        });
+      }
       dispatch({
         type: authConstants.LOGIN_SUCCESS,
         payload: {
           token,
-          user,
+          data: user,
         },
       });
     } else {
@@ -91,7 +106,14 @@ export const logout = () => {
       .catch((err) => {
         dispatch({
           type: authConstants.LOGOUT_FAILURE,
-          payload: { error: err.message },
+          payload: {
+            error:
+              typeof err.response?.data?.error !== "object"
+                ? err.response?.data?.error
+                : err.response?.data?.error?.message ||
+                  err.message ||
+                  "Some unexpected error ocuured. Try refreshing the page or contact developer if problem persists.",
+          },
         });
       });
   };

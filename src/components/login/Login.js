@@ -110,6 +110,8 @@ export default function SignInSide() {
   useEffect(() => {
     if (auth.error) {
       setError(auth.error);
+    } else {
+      setError("");
     }
   }, [auth.error]);
 

@@ -14,7 +14,7 @@ import {
   Hidden,
 } from "@material-ui/core";
 import { Search as SearchIcon } from "react-feather";
-import Breadcrumbs from "./BreadCrumbs";
+import Breadcrumbs from "../../../../components/layouts/Breadcrumbs";
 import InputLabel from "@material-ui/core/InputLabel";
 import MenuItem from "@material-ui/core/MenuItem";
 import FormControl from "@material-ui/core/FormControl";
@@ -67,6 +67,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Toolbar = ({ className, ...rest }) => {
+  // for breadcrumbs
+  const backlinks = [
+    {
+      url: "/dashboard",
+      label: "Dashboard",
+    },
+  ];
+
   const classes = useStyles();
 
   // local state management
@@ -81,7 +89,7 @@ const Toolbar = ({ className, ...rest }) => {
       <Hidden mdDown>
         <Box mt={3}>
           <Box className={classes.breadcrumbs}>
-            <Breadcrumbs />
+            <Breadcrumbs backlinks={backlinks} currentLabel="Users" />
           </Box>
         </Box>
       </Hidden>
@@ -176,6 +184,7 @@ const Toolbar = ({ className, ...rest }) => {
                   value={sort}
                   onChange={handleSortChange}
                   defaultValue="Newest first"
+                  label="Sort by"
                 >
                   <MenuItem value={10}>Newest first</MenuItem>
                   <MenuItem value={20}>Oldest first</MenuItem>
